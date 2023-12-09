@@ -1,0 +1,62 @@
+#!/bin/bash
+
+initDirectory="绝命毒师 Breaking.Bad"
+seriesIndexStart=30
+episodeIndexStart=33
+timeIndexStart=18
+resolutionIndexStart=23
+oldFileName="绝命毒师 Breaking.Bad.2008.2160P.S01E01.mkv"
+newFileName="绝命毒师 Breaking.Bad"
+
+SALVEIFS=$IFS
+IFS=$(echo -en "\n\b")
+
+function setFileName() {
+	oldFile=$1"/"$2
+	newFile=$1"/"$newFileName"."$5"."$6".S"$3"E"$4"."$7
+	echo "old file="$oldFile
+	echo "new file="$newFile
+	if [ -f $(echo $oldFile) ]
+	then
+		mv $oldFile $newFile
+	else
+		echo "old file not exist:"$oldFile
+	fi
+}
+
+
+function readDir() {
+	# for file in `ls "$1" | tr " " "\?"`
+	for file in `ls $1`
+		do
+			# file=`tr "\?" " " <<<$file`
+			dirOrFile=$1"/"$file
+			echo "file="$file
+			# echo "dirOrFile="$dirOrFile
+			if [ -d $(echo $dirOrFile) ]
+			then
+				# echo "===Directory==="dirOrFile
+				readDir $dirOrFile
+			else
+				seriesIndex=${file:seriesIndexStart:2}
+				episodeIndex=${file:episodeIndexStart:2}
+				timeIndex=${file:timeIndexStart:4}
+				resolutionIndex=${file:resolutionIndexStart:5}
+				resolutionIndex=${resolutionIndex^^}
+				suffix=${file##*.}
+				echo "seriesIndex="$seriesIndex
+				echo "episodeIndex="$episodeIndex
+				echo "timeIndex="$timeIndex
+				echo "resolutionIndex="$resolutionIndex
+				echo "suffix="$suffix
+				if [ -f $(echo $dirOrFile) ] && [ -n "$(echo $seriesIndex | sed -n "/^[0-9]\{1,2\}$/p")" ] && [ -n "$(echo $episodeIndex | sed -n "/^[0-9]\{1,2\}$/p")" ] && [ -n "$(echo $timeIndex | sed -n "/^[0-9]\{4\}$/p")" ] && [ -n "$(echo $resolutionIndex | sed -n "/^[0-9]\{4\}P$/p")" ] 
+				then
+					setFileName $1 $file $seriesIndex $episodeIndex $timeIndex $resolutionIndex $suffix
+				fi
+			fi
+		done
+}
+
+readDir $initDirectory
+
+IFS=$SAVEIFS
