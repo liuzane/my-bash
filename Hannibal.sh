@@ -1,4 +1,5 @@
 #!/bin/bash
+#脚本直接放在 initDirectory 同层文件夹执行
 
 initDirectory="汉尼拔 Hannibal"
 seriesIndexStart=17
@@ -19,8 +20,8 @@ function setFileName() {
 	echo "new file="$newFile
 	if [ -f $(echo $oldFile) ]
 	then
-		# mv $oldFile $newFile
-		echo "rename successed:"$newFile
+		mv $oldFile $newFile
+		# echo "rename successed:"$newFile
 	else
 		echo "old file not exist:"$oldFile
 	fi
@@ -43,7 +44,7 @@ function readDir() {
 			else
 				seriesIndex=${file:seriesIndexStart:2}
 				episodeIndex=${file:episodeIndexStart:2}
-				timeIndex=${$1:timeIndexStart:4}
+				timeIndex=${1:timeIndexStart:4}
 				resolutionIndex=${file:resolutionIndexStart:5}
 				resolutionIndex=${resolutionIndex^^}
 				suffix=${file##*.}

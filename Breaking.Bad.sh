@@ -18,7 +18,8 @@ function setFileName() {
 	echo "new file="$newFile
 	if [ -f $(echo $oldFile) ]
 	then
-		mv $oldFile $newFile
+		# mv $oldFile $newFile
+    echo "rename successed:"$newFile
 	else
 		echo "old file not exist:"$oldFile
 	fi
