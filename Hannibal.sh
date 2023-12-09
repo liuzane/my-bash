@@ -4,6 +4,7 @@
 initDirectory="汉尼拔 Hannibal"
 seriesIndexStart=17
 episodeIndexStart=20
+# timeIndexStart 相对于 directoryName 取值
 timeIndexStart=31
 resolutionIndexStart=9
 directoryName="汉尼拔 Hannibal/汉尼拔01 HannibalS01.2013"
